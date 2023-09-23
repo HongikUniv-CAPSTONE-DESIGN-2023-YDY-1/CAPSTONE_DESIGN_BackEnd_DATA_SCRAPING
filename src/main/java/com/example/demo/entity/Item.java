@@ -2,13 +2,19 @@ package com.example.demo.entity;
 
 import com.example.demo.dto.Promotion;
 import enums.ItemCategory;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
+@TypeDef(name = "json",typeClass = JsonType.class)
 @Table(name = "item")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,9 +30,9 @@ public class Item {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ItemCategory category;
-
-    private String subCategory;
-
+    @Type(type = "json")
+    @Column(columnDefinition = "longtext")
+    private Map<String,Object> subCategory = new HashMap<>();
     public Item(String name,String imgUrl, ItemCategory category) {
         this.name = name;
         this.imgUrl = imgUrl;
@@ -34,15 +40,18 @@ public class Item {
     }
     public Item(Promotion promotion){
         String url = promotion.getImgUrl();
-        url = url.substring(url.lastIndexOf("/")+1);
-        switch (promotion.getBrand()){
-            case CU: url = "cu_" + url; break;
-            case GS25: url = "gs25_" + url; break;
-            case EMART24: url = "emart24_" + url; break;
-            case SEVENELEVEN: url = "seven_" + url; break;
-        }
         this.name = promotion.getName();
         this.imgUrl = url;
         this.category = promotion.getCategory();
+        this.subCategory = promotion.getSubCategory();
+    }
+
+    public Item addSubCategory(String name, Object value){
+        subCategory.put(name,value);
+        return this;
+    }
+    public Item addSubCategory(Map<String,Object> subCategories){
+        subCategory.putAll(subCategories);
+        return this;
     }
 }
