@@ -18,6 +18,7 @@ public class RegixSubCategoryService implements SubCategoryService {
             calcBEVERAGESubCategory(promotion);
         }
         if(category == SNACK){
+            calcSNACKSubCategory(promotion);
         }
         if(category == FOOD){
         }
@@ -66,4 +67,38 @@ public class RegixSubCategoryService implements SubCategoryService {
         }
         return false;
     }
+
+    public void calcSNACKSubCategory(Promotion promotion){
+        String jellyRegex = "(?i)(젤리|쁘띠첼|구미|해피세븐|하리보|탱글탱글)";
+        String energyBarRegex = "(?i)(에너지바|초코바|코코볼바|콘푸라이트바|콘푸라이트밀크바|오레오밀크스낵|몬테스낵|밀카밀크스낵|조트몬테스낵|로쉐|킨더해피히포)";
+        String proteinRegex = "(?i)(단백질|프로틴)";
+        String chocoRegex = "(?i)(초콜릿|초코|코코아|킷캣|가나|빈츠|킨더|허쉬|몰트볼)";
+        String candyRegex = "(?i)(캔디|사탕|롤리팝|쥬시드랍딥퍼즈|쥬시드랍팝캔디|카라멜|이클립스|마시멜로)";
+        String crackerRegex = "(?i)(크래커|리츠|샌드|오레오|비스코프|깜드|빈츠|빠다코코낫|제크|쿠키)";
+        String basicSnack = "(?i)(새우깡|치토스|꼬깔콘|나초|도리토스|칩|오징어집|바나나킥|포스틱)";
+        String cornSnack = "(?i)(크래커|리츠|샌드|오레오|비스코프|깜드|초코쿠키)";
+        String hotSnack = "(?i)(매콤|핫|스파이시|매운|마라)";
+        String boxSnack = "(?i)(초코파이|쿠쿠다스|마가렛트|카스타드|몽쉘|빅파이|오예스|후렌치파이|초코하임|화이트하임)";
+        String potatoSnack = "(?i)(포테토칩|감자|스윙칩|프링글스)";
+        String kidsSnack = "(?i)(에너지바|초코바|코코볼바|콘푸라이트바|콘푸라이트밀크바)";
+
+        boolean isJelly = calcByRegex(jellyRegex, "젤리", promotion);
+        boolean isEnergyBar = calcByRegex(energyBarRegex, "에너지바", promotion);
+        boolean isProtein = calcByRegex(proteinRegex, "단백질", promotion);
+        boolean isChoco = calcByRegex(chocoRegex, "초콜릿", promotion);
+        boolean isCandy = calcByRegex(candyRegex, "캔디", promotion);
+        boolean isCracker = calcByRegex(crackerRegex, "크래커", promotion);
+        boolean isBasicSnack = calcByRegex(basicSnack, "기본 스낵", promotion);
+        boolean isCornSnack = calcByRegex(cornSnack, "옥수수 스낵", promotion);
+        boolean isHotSnack = calcByRegex(hotSnack, "매운 스낵", promotion);
+        boolean isBoxSnack = calcByRegex(boxSnack, "박스 스낵", promotion);
+        boolean isPotatoSnack = calcByRegex(potatoSnack, "감자 스낵", promotion);
+        boolean isKidsSnack = calcByRegex(kidsSnack, "어린이 스낵", promotion);
+
+        if (!isJelly && !isEnergyBar && !isProtein && !isChoco && !isCandy && !isCracker
+                && !isBasicSnack && !isCornSnack && !isHotSnack && !isBoxSnack && !isPotatoSnack && !isKidsSnack) {
+            promotion.addSubCategory("기본 스낵", 1);
+        }
+    }
+
 }
