@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.Promotion;
 import enums.KonbiniBrand;
 import enums.PromotionType;
 import lombok.*;
@@ -39,4 +40,12 @@ public class PromotionInfo {
 
     @Column(name = "price", nullable = false)
     private int price;
+
+    public void update(Promotion promotion){
+        brand = promotion.getBrand();
+        this.promotion = promotion.getPromotionType();
+        startDate = LocalDate.now();
+        endDate = LocalDate.now();
+        price = promotion.getPricePerUnit();
+    }
 }
