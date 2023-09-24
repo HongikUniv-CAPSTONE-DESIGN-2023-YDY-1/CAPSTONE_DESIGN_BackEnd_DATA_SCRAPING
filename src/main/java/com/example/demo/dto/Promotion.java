@@ -20,7 +20,7 @@ import java.util.Map;
 @ToString
 public class Promotion {
     private final String name;
-    private final ItemCategory category;
+    private ItemCategory category;
     private final PromotionType promotionType;
     private final int pricePerUnit;
 
@@ -69,6 +69,11 @@ public class Promotion {
     public Promotion addSubCategory(String name, Object value){
         subCategory.put(name,value);
         return this;
+    }
+
+    public void fixCategory(ItemCategory category){
+        this.category = category;
+        subCategory.clear();
     }
     public Promotion addSubCategory(Map<String,Object> subCategories){
         subCategory.putAll(subCategories);
