@@ -47,5 +47,6 @@ public class PromotionInfo {
         startDate = LocalDate.now();
         endDate = LocalDate.now();
         price = promotion.getPricePerUnit();
+        item.update(promotion);
     }
 }

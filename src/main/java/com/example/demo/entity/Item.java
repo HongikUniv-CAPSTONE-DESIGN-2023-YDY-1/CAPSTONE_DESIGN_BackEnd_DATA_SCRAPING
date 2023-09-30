@@ -45,13 +45,11 @@ public class Item {
         this.category = promotion.getCategory();
         this.subCategory = promotion.getSubCategory();
     }
-
-    public Item addSubCategory(String name, Object value){
-        subCategory.put(name,value);
-        return this;
-    }
-    public Item addSubCategory(Map<String,Object> subCategories){
-        subCategory.putAll(subCategories);
-        return this;
+    public void update(Promotion promotion){
+        String url = promotion.getImgUrl();
+        this.name = promotion.getName();
+        this.imgUrl = url;
+        this.category = promotion.getCategory();
+        this.subCategory = promotion.getSubCategory();
     }
 }
