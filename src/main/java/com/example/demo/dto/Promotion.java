@@ -6,26 +6,43 @@ import enums.ItemCategory;
 import enums.KonbiniBrand;
 import enums.PromotionType;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.TextNode;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @ToString
 public class Promotion {
     private final String name;
-    private final ItemCategory category;
+    private ItemCategory category;
     private final PromotionType promotionType;
     private final int pricePerUnit;
 
+    @Setter
     private String imgUrl;
 
     private final KonbiniBrand brand;
 
-    public Promotion(Element data, TextNode nameElement,int category,String brand){
+    private final Map<String,Object> subCategory = new HashMap<>();
+
+    public Promotion(Element data, TextNode nameElement,int category,String brand,Element img){
+        this(data, nameElement, category, brand);
+        if(img == null){
+            return;
+        }
+        String src = img.attr("src");
+        if(!src.contains("http")){
+            src = "https:"+src;
+        }
+        this.imgUrl = src;
+    }
+    private Promotion(Element data, TextNode nameElement,int category,String brand){
         name = data.select("strong").text();
         pricePerUnit = Integer.parseInt(nameElement.toString().replaceAll(" ","")
                 .replaceAll(",","")
@@ -38,14 +55,6 @@ public class Promotion {
                 .findFirst().orElseThrow();
     }
 
-    public void setImgUrl(Element img) {
-        String src = img.attr("src");
-        if(!src.contains("http")){
-            src = "https:"+src;
-        }
-        this.imgUrl = src;
-    }
-
     public PromotionInfo toNewPromotion(){
         return PromotionInfo.builder()
                 .brand(this.getBrand())
@@ -55,5 +64,19 @@ public class Promotion {
                 .item(new Item(this))
                 .promotion(this.getPromotionType())
                 .build();
+    }
+
+    public Promotion addSubCategory(String name, Object value){
+        subCategory.put(name,value);
+        return this;
+    }
+
+    public void fixCategory(ItemCategory category){
+        this.category = category;
+        subCategory.clear();
+    }
+    public Promotion addSubCategory(Map<String,Object> subCategories){
+        subCategory.putAll(subCategories);
+        return this;
     }
 }

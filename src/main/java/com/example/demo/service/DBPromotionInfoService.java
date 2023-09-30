@@ -17,8 +17,12 @@ public class DBPromotionInfoService implements PromotionInfoService {
     private final PromotionInfoRepository repository;
     @Override
     public void saveAll(List<Promotion> promotions) {
-        List<PromotionInfo> promotionInfos = promotions.stream().map(promotion ->
-                repository.findByBrandAndItem_Name(promotion.getBrand(), promotion.getName()).orElse(promotion.toNewPromotion()))
+        List<PromotionInfo> promotionInfos = promotions.stream().map(promotion -> {
+                    PromotionInfo promotionInfo = repository.findByBrandAndItem_Name(promotion.getBrand(), promotion.getName())
+                            .orElse(promotion.toNewPromotion());
+                    promotionInfo.update(promotion);
+                    return promotionInfo;
+                })
                 .collect(Collectors.toList());
         repository.saveAll(promotionInfos);
     }

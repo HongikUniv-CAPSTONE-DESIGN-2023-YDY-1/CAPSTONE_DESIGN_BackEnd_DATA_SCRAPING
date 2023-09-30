@@ -23,6 +23,11 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.5'
+
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     annotationProcessor 'org.projectlombok:lombok'
@@ -30,6 +35,8 @@ dependencies {
 
     implementation 'org.jsoup:jsoup:1.16.1'
 
+    // jpa json 타입
+    implementation 'io.hypersistence:hypersistence-utils-hibernate-55:3.5.2'
 }
 
 tasks.named('test') {
