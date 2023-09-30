@@ -24,8 +24,10 @@ public class RegixSubCategoryService implements SubCategoryService {
             calcFOODSubCategory(promotion);
         }
         if(category == ICE_CREAM){
+            calcICE_CREAMSubCategory(promotion);
         }
         if(category == HOUSEHOLD){
+            calcHOUSEHOLDSubCategory(promotion);
         }
     }
     private void calcBEVERAGESubCategory(Promotion promotion){
@@ -81,7 +83,7 @@ public class RegixSubCategoryService implements SubCategoryService {
         String hotSnack = "(?i)(매콤|핫|스파이시|매운|마라)";
         String boxSnack = "(?i)(초코파이|쿠쿠다스|마가렛트|카스타드|몽쉘|빅파이|오예스|후렌치파이|초코하임|화이트하임)";
         String potatoSnack = "(?i)(포테토칩|감자|스윙칩|프링글스)";
-        String kidsSnack = "(?i)(에너지바|초코바|코코볼바|콘푸라이트바|콘푸라이트밀크바)";
+        String kidsSnack = "(?i)(흔한남매|곰돌이푸|안흔한플리퍼즈|포켓몬|키링|팔찌|캐치티니)";
 
         boolean isJelly = calcByRegex(jellyRegex, "젤리", promotion);
         boolean isEnergyBar = calcByRegex(energyBarRegex, "에너지바", promotion);
@@ -153,6 +155,46 @@ public class RegixSubCategoryService implements SubCategoryService {
         if (isJelly){
             promotion.fixCategory(SNACK);
             calcSNACKSubCategory(promotion);
+        }
+    }
+
+    private void calcICE_CREAMSubCategory(Promotion promotion) {
+        String coneRegex = "(?i)(콘|설레임)";
+        String barRegex = "(?i)(바|옥동자)";
+        String cupRegex = "(?i)(컵|파인트|더블비얀코)";
+
+        boolean isCone = calcByRegex(coneRegex, "콘", promotion);
+        boolean isBar = calcByRegex(barRegex, "바", promotion);
+        boolean isCup = calcByRegex(cupRegex, "컵", promotion);
+
+        if (!isCone && !isBar && !isCup) {
+            promotion.addSubCategory("기타",1);
+        }
+    }
+
+    private void calcHOUSEHOLDSubCategory(Promotion promotion) {
+        // 각각의 정규식 패턴과 boolean 변수를 설정합니다.
+        String mouseHealthRegex = "(?i)(2080|칫솔|치약|가그린|리스테린|가글|미세모)";
+        String bodyCleanRegex = "(?i)(헤어|샴푸|린스|컨디셔너|바디워시|핸드워시)";
+        String clothCleanRegex = "(?i)(샤프란|세제|빨래|다우니|페브리즈|실내건조|테크|섬유)";
+        String womenRegex = "(?i)(바디피트|볼록맞춤|안심숙면팬티|귀애랑|오버나이트|울날중|울날대|중형|대형|생리대|스타킹|여성)";
+        String menRegex = "(?i)(질레트|면도기|면도|도루코|남성)";
+        String beautyRegex = "(?i)(립케어|핸드크림|로션|썬크림|드라이콤포트|왁스)";
+        String petRegex = "(?i)(애견|닭|참치|연어)";
+        String tissueRegex = "(?i)(티슈|휴지|키친타올|롤)";
+
+        boolean isMouseHealth = calcByRegex(mouseHealthRegex, "구강/치아 관리", promotion);
+        boolean isBodyClean = calcByRegex(bodyCleanRegex, "헤어/바디 클렌징", promotion);
+        boolean isClothClean = calcByRegex(clothCleanRegex, "세탁/청소", promotion);
+        boolean isWomen = calcByRegex(womenRegex, "여성용품", promotion);
+        boolean isMen = calcByRegex(menRegex, "남성용품", promotion);
+        boolean isBeauty = calcByRegex(beautyRegex, "뷰티용품", promotion);
+        boolean isPet = calcByRegex(petRegex, "애완용품", promotion);
+        boolean isTissue = calcByRegex(tissueRegex, "휴지/티슈", promotion);
+
+        // 모든 boolean 변수가 false인 경우 실행합니다.
+        if (!isMouseHealth && !isBodyClean && !isClothClean && !isWomen && !isMen && !isBeauty && !isPet && !isTissue) {
+            promotion.addSubCategory("기타",1);
         }
     }
 
