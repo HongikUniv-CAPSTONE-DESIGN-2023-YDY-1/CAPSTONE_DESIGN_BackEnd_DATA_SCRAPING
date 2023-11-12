@@ -81,7 +81,7 @@ public class CrawlingService {
                     System.err.println(promotion);
                     System.err.println("이미지 다운로드 중 오류가 발생했습니다.");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.println(promotion);
                 System.err.println("URL에 연결 중 오류가 발생했습니다.");
             }
